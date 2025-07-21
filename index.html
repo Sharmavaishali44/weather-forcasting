@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather App - Vaishali sharma</title>
+
+    <!-- Boxicons Link -->
+    <link rel="stylesheet" href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            height: 100vh;
+            background: #111;
+            overflow: hidden;
+            position: relative;
+            color: #fff;
+        }
+
+        video.background-clip {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 450px;
+            margin: 50px auto;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 20px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .search-box {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 10px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .search-box input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            outline: none;
+            color: #fff;
+            font-size: 16px;
+        }
+
+        .search-box button {
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 22px;
+            cursor: pointer;
+        }
+
+        .weather-box {
+            text-align: center;
+        }
+
+        .weather-box img {
+            width: 100px;
+        }
+
+        .temperature {
+            font-size: 2.5rem;
+            font-weight: bold;
+        }
+
+        .description {
+            text-transform: capitalize;
+            margin-bottom: 10px;
+        }
+
+        .weather-details {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+
+        .weather-details .humidity, .weather-details .wind, .weather-details .feels-like {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .weather-details i {
+            font-size: 30px;
+        }
+
+        .sunrise-sunset {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 20px;
+        }
+
+        .forecast {
+            margin-top: 20px;
+        }
+
+        .forecast h2 {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .forecast-cards {
+            display: flex;
+            overflow-x: auto;
+            gap: 10px;
+            padding-bottom: 10px;
+        }
+
+        .forecast-cards .card {
+            flex: 0 0 auto;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 10px;
+            border-radius: 10px;
+            text-align: center;
+            min-width: 80px;
+            transition: transform 0.3s;
+        }
+
+        .forecast-cards .card:hover {
+            transform: scale(1.05);
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body>
+<!-- Image Background -->
+<style>
+    .background-clip {
+        position: fixed;
+        top: 0;
+        left: 0;
+        min-width: 100%;
+        min-height: 100%;
+        z-index: -1;
+        background-image: url('123.jpg'); /* Replace with your image path */
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+    }
+</style>
+
+<div class="background-clip"></div>
+
+    <div class="container">
+        <div class="search-box">
+            <i class="bx bxs-map"></i>
+            <input type="text" placeholder="Enter Your Location" id="city-input">
+            <button id="search-btn" class="bx bx-search"></button>
+        </div>
+
+        <div class="weather-box">
+            <img src="images/cloud.png" id="weather-icon">
+            <p class="temperature" id="temperature">0<span>⁰C</span></p>
+            <p class="description" id="description">Broken Clouds</p>
+        </div>
+
+        <div class="weather-details">
+            <div class="humidity">
+                <i class="bx bx-water"></i>
+                <div>
+                    <div id="humidity">0%</div>
+                    <p>Humidity</p>
+                </div>
+            </div>
+
+            <div class="wind">
+                <i class="bx bx-wind"></i>
+                <div>
+                    <div id="wind">0Km/h</div>
+                    <p>Wind Speed</p>
+                </div>
+            </div>
+
+            <div class="feels-like">
+                <i class="bx bx-thermometer"></i>
+                <div>
+                    <div id="feels-like">0⁰C</div>
+                    <p>Feels Like</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="sunrise-sunset">
+            <div class="sunrise">
+                <i class="bx bx-sun"></i>
+                <div>
+                    <span id="sunrise-time">6:00 AM</span>
+                    <p>Sunrise</p>
+                </div>
+            </div>
+            <div class="sunset">
+                <i class="bx bx-moon"></i>
+                <div>
+                    <span id="sunset-time">6:00 PM</span>
+                    <p>Sunset</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="forecast">
+            <h2>5-Day Forecast</h2>
+            <div class="forecast-cards" id="forecast-cards">
+                <!-- Forecast cards dynamically inserted -->
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy;PROJECT Created by Vaishali sharma Using HTML, CSS and JavaScript</p>
+    </footer>
+
+    <script>
+        const apiKey = "5bc06f50ea4133a580ffe081f9969b09"; // Replace with your OpenWeatherMap API key
+        const searchBtn = document.getElementById('search-btn');
+        const cityInput = document.getElementById('city-input');
+
+        searchBtn.addEventListener('click', () => {
+            const city = cityInput.value.trim();
+            if (city !== "") {
+                getWeatherData(city);
+            }
+        });
+
+        async function getWeatherData(city) {
+            const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
+            const forecastUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}&units=metric`;
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+
+                document.getElementById('temperature').innerHTML = `${Math.round(data.main.temp)}<span>⁰C</span>`;
+                document.getElementById('description').innerText = data.weather[0].description;
+                document.getElementById('humidity').innerText = `${data.main.humidity}%`;
+                document.getElementById('wind').innerText = `${Math.round(data.wind.speed)}Km/h`;
+                document.getElementById('feels-like').innerText = `${Math.round(data.main.feels_like)}⁰C`;
+
+                const sunrise = new Date(data.sys.sunrise * 1000).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                const sunset = new Date(data.sys.sunset * 1000).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                document.getElementById('sunrise-time').innerText = sunrise;
+                document.getElementById('sunset-time').innerText = sunset;
+
+                updateBackground(data.weather[0].main);
+
+                const forecastResponse = await fetch(forecastUrl);
+                const forecastData = await forecastResponse.json();
+                displayForecast(forecastData.list);
+            } catch (error) {
+                alert("City not found!");
+            }
+        }
+
+        function updateBackground(weatherType) {
+            const video = document.getElementById('background-video');
+            const source = document.getElementById('video-source');
+
+            if (weatherType.includes('Rain')) {
+                source.setAttribute('src', 'video/rain.mp4');
+            } else if (weatherType.includes('Clear')) {
+                source.setAttribute('src', 'video/sunny.mp4');
+            } else {
+                source.setAttribute('src', 'video/cloudy.mp4');
+            }
+
+            video.load();   // reload updated source
+            video.play();   // play video again
+        }
+
+        function displayForecast(forecasts) {
+            const forecastCards = document.getElementById('forecast-cards');
+            forecastCards.innerHTML = '';
+            for (let i = 0; i < forecasts.length; i += 8) {
+                const day = new Date(forecasts[i].dt_txt).toLocaleDateString('en-US', { weekday: 'short' });
+                const temp = Math.round(forecasts[i].main.temp);
+                const icon = forecasts[i].weather[0].icon;
+
+                const card = `
+                <div class="card">
+                    <p>${day}</p>
+                    <img src="https://openweathermap.org/img/wn/${icon}@2x.png" alt="Weather">
+                    <p>${temp}⁰C</p>
+                </div>`;
+                forecastCards.insertAdjacentHTML('beforeend', card);
+            }
+        }
+    </script>
+
+</body>
+</html>
